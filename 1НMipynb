@@ -1,0 +1,927 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "collapsed_sections": [],
+      "toc_visible": true,
+      "mount_file_id": "1INdDvDA1_dfZzm2dwcwcXMfcGLhTwQKE",
+      "authorship_tag": "ABX9TyNatbKab3IF38I8/+UMre8k",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Algozakhar/deep_learning/blob/main/1%D0%9DMipynb\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "L5ELuXlZHl_2"
+      },
+      "outputs": [],
+      "source": [
+        "import pandas as pd\n",
+        "import numpy as np"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "all_data = pd.read_csv('FHM_baze/forest_dataset.csv')\n",
+        "all_data.head(15)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 549
+        },
+        "id": "s92J6ky7IN7N",
+        "outputId": "65ebab5a-c0ab-49a9-a8cb-d013c3187c37"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "       0    1   2    3    4     5    6    7    8     9  ...  45  46  47  48  \\\n",
+              "0   2683  333  35   30   26  2743  121  173  179  6572  ...   0   0   0   0   \n",
+              "1   2915   90   8  216   11  4433  232  228  129  4019  ...   0   0   0   0   \n",
+              "2   2941  162   7  698   76  2783  227  242  148  1784  ...   0   0   0   0   \n",
+              "3   3096   60  17  170    3  3303  231  202   99  5370  ...   0   0   0   0   \n",
+              "4   2999   66   8  488   37  1532  228  225  131  2290  ...   0   0   0   0   \n",
+              "5   2878    7  11  417   47  2355  207  218  148  2571  ...   0   0   0   0   \n",
+              "6   2995  144   8  324   77  2523  232  239  138  1711  ...   1   0   0   0   \n",
+              "7   3158  143  28  480   81  1061  247  221   84  2234  ...   0   0   0   0   \n",
+              "8   2911  315   8   67    4  3522  198  233  175  2407  ...   0   0   0   0   \n",
+              "9   2968  212  10   42    3  5413  211  250  173  2213  ...   0   0   0   0   \n",
+              "10  3274  330   9  537  100   616  198  229  170   458  ...   0   0   0   0   \n",
+              "11  3021  147  11   42    0  5196  235  239  134  1818  ...   0   0   0   0   \n",
+              "12  3355  246   3  283   24   934  213  241  166  2042  ...   1   0   0   0   \n",
+              "13  3130  338  20  616  325  1209  172  207  171  1144  ...   0   1   0   0   \n",
+              "14  3017  249   7    0    0  2273  206  245  177  1090  ...   0   0   0   0   \n",
+              "\n",
+              "    49  50  51  52  53  54  \n",
+              "0    0   0   0   0   0   2  \n",
+              "1    0   0   0   0   0   1  \n",
+              "2    0   0   0   0   0   2  \n",
+              "3    0   0   0   0   0   1  \n",
+              "4    0   0   0   0   0   2  \n",
+              "5    0   0   0   0   0   2  \n",
+              "6    0   0   0   0   0   2  \n",
+              "7    0   0   0   0   0   1  \n",
+              "8    0   0   0   0   0   2  \n",
+              "9    0   0   0   0   0   1  \n",
+              "10   0   0   0   0   0   1  \n",
+              "11   0   0   0   0   0   1  \n",
+              "12   0   0   0   0   0   7  \n",
+              "13   0   0   0   0   0   1  \n",
+              "14   0   0   0   0   0   1  \n",
+              "\n",
+              "[15 rows x 55 columns]"
+            ],
+            "text/html": [
+              "\n",
+              "  <div id=\"df-bcdc9ed0-2d2a-41e6-86d3-fef2d7ccbb2b\">\n",
+              "    <div class=\"colab-df-container\">\n",
+              "      <div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>0</th>\n",
+              "      <th>1</th>\n",
+              "      <th>2</th>\n",
+              "      <th>3</th>\n",
+              "      <th>4</th>\n",
+              "      <th>5</th>\n",
+              "      <th>6</th>\n",
+              "      <th>7</th>\n",
+              "      <th>8</th>\n",
+              "      <th>9</th>\n",
+              "      <th>...</th>\n",
+              "      <th>45</th>\n",
+              "      <th>46</th>\n",
+              "      <th>47</th>\n",
+              "      <th>48</th>\n",
+              "      <th>49</th>\n",
+              "      <th>50</th>\n",
+              "      <th>51</th>\n",
+              "      <th>52</th>\n",
+              "      <th>53</th>\n",
+              "      <th>54</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>2683</td>\n",
+              "      <td>333</td>\n",
+              "      <td>35</td>\n",
+              "      <td>30</td>\n",
+              "      <td>26</td>\n",
+              "      <td>2743</td>\n",
+              "      <td>121</td>\n",
+              "      <td>173</td>\n",
+              "      <td>179</td>\n",
+              "      <td>6572</td>\n",
+              "      <td>...</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>2</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>2915</td>\n",
+              "      <td>90</td>\n",
+              "      <td>8</td>\n",
+              "      <td>216</td>\n",
+              "      <td>11</td>\n",
+              "      <td>4433</td>\n",
+              "      <td>232</td>\n",
+              "      <td>228</td>\n",
+              "      <td>129</td>\n",
+              "      <td>4019</td>\n",
+              "      <td>...</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>2941</td>\n",
+              "      <td>162</td>\n",
+              "      <td>7</td>\n",
+              "      <td>698</td>\n",
+              "      <td>76</td>\n",
+              "      <td>2783</td>\n",
+              "      <td>227</td>\n",
+              "      <td>242</td>\n",
+              "      <td>148</td>\n",
+              "      <td>1784</td>\n",
+              "      <td>...</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>2</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>3</th>\n",
+              "      <td>3096</td>\n",
+              "      <td>60</td>\n",
+              "      <td>17</td>\n",
+              "      <td>170</td>\n",
+              "      <td>3</td>\n",
+              "      <td>3303</td>\n",
+              "      <td>231</td>\n",
+              "      <td>202</td>\n",
+              "      <td>99</td>\n",
+              "      <td>5370</td>\n",
+              "      <td>...</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>4</th>\n",
+              "      <td>2999</td>\n",
+              "      <td>66</td>\n",
+              "      <td>8</td>\n",
+              "      <td>488</td>\n",
+              "      <td>37</td>\n",
+              "      <td>1532</td>\n",
+              "      <td>228</td>\n",
+              "      <td>225</td>\n",
+              "      <td>131</td>\n",
+              "      <td>2290</td>\n",
+              "      <td>...</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>2</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>5</th>\n",
+              "      <td>2878</td>\n",
+              "      <td>7</td>\n",
+              "      <td>11</td>\n",
+              "      <td>417</td>\n",
+              "      <td>47</td>\n",
+              "      <td>2355</td>\n",
+              "      <td>207</td>\n",
+              "      <td>218</td>\n",
+              "      <td>148</td>\n",
+              "      <td>2571</td>\n",
+              "      <td>...</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>2</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>6</th>\n",
+              "      <td>2995</td>\n",
+              "      <td>144</td>\n",
+              "      <td>8</td>\n",
+              "      <td>324</td>\n",
+              "      <td>77</td>\n",
+              "      <td>2523</td>\n",
+              "      <td>232</td>\n",
+              "      <td>239</td>\n",
+              "      <td>138</td>\n",
+              "      <td>1711</td>\n",
+              "      <td>...</td>\n",
+              "      <td>1</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>2</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>7</th>\n",
+              "      <td>3158</td>\n",
+              "      <td>143</td>\n",
+              "      <td>28</td>\n",
+              "      <td>480</td>\n",
+              "      <td>81</td>\n",
+              "      <td>1061</td>\n",
+              "      <td>247</td>\n",
+              "      <td>221</td>\n",
+              "      <td>84</td>\n",
+              "      <td>2234</td>\n",
+              "      <td>...</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>8</th>\n",
+              "      <td>2911</td>\n",
+              "      <td>315</td>\n",
+              "      <td>8</td>\n",
+              "      <td>67</td>\n",
+              "      <td>4</td>\n",
+              "      <td>3522</td>\n",
+              "      <td>198</td>\n",
+              "      <td>233</td>\n",
+              "      <td>175</td>\n",
+              "      <td>2407</td>\n",
+              "      <td>...</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>2</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>9</th>\n",
+              "      <td>2968</td>\n",
+              "      <td>212</td>\n",
+              "      <td>10</td>\n",
+              "      <td>42</td>\n",
+              "      <td>3</td>\n",
+              "      <td>5413</td>\n",
+              "      <td>211</td>\n",
+              "      <td>250</td>\n",
+              "      <td>173</td>\n",
+              "      <td>2213</td>\n",
+              "      <td>...</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>10</th>\n",
+              "      <td>3274</td>\n",
+              "      <td>330</td>\n",
+              "      <td>9</td>\n",
+              "      <td>537</td>\n",
+              "      <td>100</td>\n",
+              "      <td>616</td>\n",
+              "      <td>198</td>\n",
+              "      <td>229</td>\n",
+              "      <td>170</td>\n",
+              "      <td>458</td>\n",
+              "      <td>...</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>11</th>\n",
+              "      <td>3021</td>\n",
+              "      <td>147</td>\n",
+              "      <td>11</td>\n",
+              "      <td>42</td>\n",
+              "      <td>0</td>\n",
+              "      <td>5196</td>\n",
+              "      <td>235</td>\n",
+              "      <td>239</td>\n",
+              "      <td>134</td>\n",
+              "      <td>1818</td>\n",
+              "      <td>...</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>12</th>\n",
+              "      <td>3355</td>\n",
+              "      <td>246</td>\n",
+              "      <td>3</td>\n",
+              "      <td>283</td>\n",
+              "      <td>24</td>\n",
+              "      <td>934</td>\n",
+              "      <td>213</td>\n",
+              "      <td>241</td>\n",
+              "      <td>166</td>\n",
+              "      <td>2042</td>\n",
+              "      <td>...</td>\n",
+              "      <td>1</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>7</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>13</th>\n",
+              "      <td>3130</td>\n",
+              "      <td>338</td>\n",
+              "      <td>20</td>\n",
+              "      <td>616</td>\n",
+              "      <td>325</td>\n",
+              "      <td>1209</td>\n",
+              "      <td>172</td>\n",
+              "      <td>207</td>\n",
+              "      <td>171</td>\n",
+              "      <td>1144</td>\n",
+              "      <td>...</td>\n",
+              "      <td>0</td>\n",
+              "      <td>1</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>14</th>\n",
+              "      <td>3017</td>\n",
+              "      <td>249</td>\n",
+              "      <td>7</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>2273</td>\n",
+              "      <td>206</td>\n",
+              "      <td>245</td>\n",
+              "      <td>177</td>\n",
+              "      <td>1090</td>\n",
+              "      <td>...</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "<p>15 rows × 55 columns</p>\n",
+              "</div>\n",
+              "      <button class=\"colab-df-convert\" onclick=\"convertToInteractive('df-bcdc9ed0-2d2a-41e6-86d3-fef2d7ccbb2b')\"\n",
+              "              title=\"Convert this dataframe to an interactive table.\"\n",
+              "              style=\"display:none;\">\n",
+              "        \n",
+              "  <svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\"viewBox=\"0 0 24 24\"\n",
+              "       width=\"24px\">\n",
+              "    <path d=\"M0 0h24v24H0V0z\" fill=\"none\"/>\n",
+              "    <path d=\"M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z\"/><path d=\"M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z\"/>\n",
+              "  </svg>\n",
+              "      </button>\n",
+              "      \n",
+              "  <style>\n",
+              "    .colab-df-container {\n",
+              "      display:flex;\n",
+              "      flex-wrap:wrap;\n",
+              "      gap: 12px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert {\n",
+              "      background-color: #E8F0FE;\n",
+              "      border: none;\n",
+              "      border-radius: 50%;\n",
+              "      cursor: pointer;\n",
+              "      display: none;\n",
+              "      fill: #1967D2;\n",
+              "      height: 32px;\n",
+              "      padding: 0 0 0 0;\n",
+              "      width: 32px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert:hover {\n",
+              "      background-color: #E2EBFA;\n",
+              "      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);\n",
+              "      fill: #174EA6;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert {\n",
+              "      background-color: #3B4455;\n",
+              "      fill: #D2E3FC;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert:hover {\n",
+              "      background-color: #434B5C;\n",
+              "      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);\n",
+              "      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));\n",
+              "      fill: #FFFFFF;\n",
+              "    }\n",
+              "  </style>\n",
+              "\n",
+              "      <script>\n",
+              "        const buttonEl =\n",
+              "          document.querySelector('#df-bcdc9ed0-2d2a-41e6-86d3-fef2d7ccbb2b button.colab-df-convert');\n",
+              "        buttonEl.style.display =\n",
+              "          google.colab.kernel.accessAllowed ? 'block' : 'none';\n",
+              "\n",
+              "        async function convertToInteractive(key) {\n",
+              "          const element = document.querySelector('#df-bcdc9ed0-2d2a-41e6-86d3-fef2d7ccbb2b');\n",
+              "          const dataTable =\n",
+              "            await google.colab.kernel.invokeFunction('convertToInteractive',\n",
+              "                                                     [key], {});\n",
+              "          if (!dataTable) return;\n",
+              "\n",
+              "          const docLinkHtml = 'Like what you see? Visit the ' +\n",
+              "            '<a target=\"_blank\" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'\n",
+              "            + ' to learn more about interactive tables.';\n",
+              "          element.innerHTML = '';\n",
+              "          dataTable['output_type'] = 'display_data';\n",
+              "          await google.colab.output.renderOutput(dataTable, element);\n",
+              "          const docLink = document.createElement('div');\n",
+              "          docLink.innerHTML = docLinkHtml;\n",
+              "          element.appendChild(docLink);\n",
+              "        }\n",
+              "      </script>\n",
+              "    </div>\n",
+              "  </div>\n",
+              "  "
+            ]
+          },
+          "metadata": {},
+          "execution_count": 137
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "all_data.shape"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "EUGCHZn4IwAd",
+        "outputId": "4da4d0dc-fb1d-4103-94b7-eebee2fbd7bc"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "(10000, 55)"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 138
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "labels = all_data[all_data.columns[-1]].values\n",
+        "labels"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "E9WwPG5DI759",
+        "outputId": "54a375fb-e5fe-407f-d493-7c58911f3d7b"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([2, 1, 2, ..., 2, 2, 2])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 139
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "feature_matrix = all_data[all_data.columns[0:-1]].values\n",
+        "feature_matrix"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "TrlkYBAiJzn_",
+        "outputId": "9e6bc2cc-693c-49c9-bbe9-8e1faa51f3e0"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([[2683,  333,   35, ...,    0,    0,    0],\n",
+              "       [2915,   90,    8, ...,    0,    0,    0],\n",
+              "       [2941,  162,    7, ...,    0,    0,    0],\n",
+              "       ...,\n",
+              "       [2693,   21,   11, ...,    0,    0,    0],\n",
+              "       [2536,   42,   11, ...,    0,    0,    0],\n",
+              "       [3109,  261,   10, ...,    0,    0,    0]])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 140
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from sklearn.model_selection import train_test_split"
+      ],
+      "metadata": {
+        "id": "HcwqS3IZKNkA"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "train_feature_matrix, test_feature_matrix, train_labels, test_labels = train_test_split(feature_matrix, labels, test_size = 0.2, random_state = 40)"
+      ],
+      "metadata": {
+        "id": "wMAoDWzELLIU"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from sklearn.neighbors import KNeighborsClassifier\n",
+        "from sklearn.metrics import accuracy_score"
+      ],
+      "metadata": {
+        "id": "3r4_mTy_LQsS"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "clf = KNeighborsClassifier(1)\n",
+        "clf.fit(train_feature_matrix, train_labels)\n",
+        "y_pred = clf.predict(test_feature_matrix)\n",
+        "accuracy_score(y_pred, test_labels)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "wUuORJKzM8ES",
+        "outputId": "f74b29f4-61f6-4473-9556-327c5ecb117f"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "0.7855"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 144
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "-  Переберите по сетке от 1 до 10 параметр числа соседей\n",
+        "\n",
+        "-  Также вы попробуйте использоввать различные метрики: ['manhattan', 'euclidean']\n",
+        "\n",
+        "-  Попробуйте использовать различные стратегии вычисления весов: [‘uniform’, ‘distance’]"
+      ],
+      "metadata": {
+        "id": "2jh2x3aNN84n"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from sklearn.model_selection import GridSearchCV\n"
+      ],
+      "metadata": {
+        "id": "a8xmrcuyOJpf"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "cl = KNeighborsClassifier()\n",
+        "params = { 'n_neighbors': np.arange(1,10),\n",
+        "           'metric': ['manhattan', 'euclidean'],\n",
+        "           'weights': ['uniform', 'distance']\n",
+        "         }"
+      ],
+      "metadata": {
+        "id": "5Yf22PCJOfMe"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "cl_grid = GridSearchCV(cl, params, n_jobs =-1, cv =5, refit=True, scoring='accuracy')"
+      ],
+      "metadata": {
+        "id": "BWX3LinxRI8J"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "cl_grid.fit(feature_matrix, labels)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "NYBkGx3BR0oo",
+        "outputId": "9768e768-d6c7-4e68-b6d7-d30211abd3e1"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "GridSearchCV(cv=5, estimator=KNeighborsClassifier(), n_jobs=-1,\n",
+              "             param_grid={'metric': ['manhattan', 'euclidean'],\n",
+              "                         'n_neighbors': array([1, 2, 3, 4, 5, 6, 7, 8, 9]),\n",
+              "                         'weights': ['uniform', 'distance']},\n",
+              "             scoring='accuracy')"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 163
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "cl_grid.best_params_"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "gYXAjLqu5t0h",
+        "outputId": "9950b89c-f624-4839-ec8e-d6b5a721b257"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "{'metric': 'manhattan', 'n_neighbors': 4, 'weights': 'distance'}"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 164
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "clf_best = KNeighborsClassifier(4, weights = 'distance', metric = 'manhattan')\n",
+        "clf_best.fit(train_feature_matrix, train_labels)\n",
+        "best_prob = clf_best.predict(test_feature_matrix)\n",
+        "probe = accuracy_score(test_labels, best_prob)\n",
+        "print(probe)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "1a5f8cinWLH0",
+        "outputId": "001b5afa-3644-48b1-8a78-be766a7a22d4"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "0.805\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#@title Текст заголовка по умолчанию\n",
+        "pred_prob = clf_best.predict_proba(test_feature_matrix)"
+      ],
+      "metadata": {
+        "id": "0os8rMhP7ExJ"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import matplotlib.pyplot as plt\n",
+        "%matplotlib inline\n",
+        "import numpy as np\n",
+        "unique, freq = np.unique(test_labels, return_counts = True)\n",
+        "freq = list(map(lambda x:x/len(test_labels),freq))\n",
+        "pred_freq = pred_prob.mean(axis = 0)\n",
+        "plt.bar(range(1,8),pred_freq, width=0.4, align = 'edge',label='predict')\n",
+        "plt.bar(range(1,8),freq, width=-0.4, align='edge', label='real')\n",
+        "plt.ylim(0, 0.54)\n",
+        "plt.legend()\n",
+        "plt.show()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 265
+        },
+        "id": "fdTUTViV92Zw",
+        "outputId": "81f0b3e9-dc06-4bf2-bd0c-5f28aadd5043"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<Figure size 432x288 with 1 Axes>"
+            ],
+            "image/png": "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\n"
+          },
+          "metadata": {
+            "needs_background": "light"
+          }
+        }
+      ]
+    }
+  ]
+}
